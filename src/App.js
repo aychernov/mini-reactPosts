@@ -5,43 +5,54 @@ import PostItem from "./components/PostItem";
 import PostList from "./components/PostList";
 import MyButton from "./components/UI/button/MyButton";
 import MyInput from "./components/UI/input/MyInput";
+import PostForm from "./components/PostForm";
+import MySelect from "./components/UI/select/MySelect";
 
 function App() {
     const [posts, setPosts] = useState([
-        {id: 1, title: 'Js1', body: 'Description'},
-        {id: 2, title: 'Js2', body: 'Description'},
-        {id: 3, title: 'Js3', body: 'Description'}
+        {id: 1, title: 'яяя', body: 'вв'},
+        {id: 2, title: 'ввв', body: 'ее'},
+        {id: 3, title: 'ааа', body: 'уу'}
     ]);
 
-    const [post, setPost] = useState({title: '', body: ''})
+    const [selectedSort, setSelectedSort] = useState('')
 
 
-    const addNewPost = (e) => {
-        e.preventDefault()
-        setPosts([...posts, {...post, id: Date.now() }])
-        setPost({title: '', body: ''})
+    const createPost = (newPost) => {
+        setPosts([...posts, newPost])
+    }
+
+    const removePost = (post) => {
+        setPosts(posts.filter(p => p.id !== post.id))
+    }
+
+    const sortPosts = (sort) =>{
+        setSelectedSort(sort)
+        console.log(sort)
+        setPosts( [...posts].sort((a,b) => a[sort].localeCompare(b[sort])))
     }
 
     return (
         <div className="App">
-            <form>
+            <PostForm create={createPost}/>
+            <div>
+                <hr style={{margin: '15px 0px'}}/>
+                <MySelect
+                    value={selectedSort}
+                    onChange={sortPosts}
+                    defaultValue='Сортировка по'
+                    option={[
+                        {value: 'title', name: 'По названию'},
+                        {value: 'body', name: 'По описанию'},
+                    ]}
 
-                <MyInput
-                    value={post.title}
-                    onChange={e => setPost({...post, title: e.target.value})}
-                    type="text"
-                    placeholder='Название'
                 />
+            </div>
+            {posts.length
+                ? <PostList remove={removePost} posts={posts} title={'Посты про JS 1'}/>
+                : <h1 style={{textAlign: 'center'}}>Постов нет!</h1>
+            }
 
-                <MyInput
-                    value={post.body}
-                    onChange={e => setPost({...post, body: e.target.value})}
-                    type="text"
-                    placeholder='Описание'
-                />
-                <MyButton onClick={addNewPost}>Создать пост</MyButton>
-            </form>
-            <PostList posts={posts} title={'Посты про JS 1'}/>
         </div>
     );
 }
