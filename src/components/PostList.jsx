@@ -2,13 +2,11 @@ import React from 'react';
 import PostItem from "./PostItem";
 
 const PostList = ({posts, title, remove}) => {
-    if (!posts.length){
+    if (!posts.length) {
         return (
-            <h1 style={{textAlign:'center'}}> Посты не найдены </h1>
+            <h1 style={{textAlign: 'center'}}> Посты не найдены </h1>
         )
     }
-
-
 
     return (
         <div>
@@ -23,7 +21,6 @@ const PostList = ({posts, title, remove}) => {
                     key={post.id}
                     number={index + 1}
                 />
-
             )}
         </div>
     );
