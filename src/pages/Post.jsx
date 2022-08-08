@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import '../styles/App.css'
-import {usePosts} from "../hooks/usePost";
-import {getPageCount, getPagesArray} from "../utils/pages";
-import {useFetching} from "../hooks/useFetching";
+import { usePosts } from "../hooks/usePost";
+import { getPageCount, getPagesArray } from "../utils/pages";
+import { useFetching } from "../hooks/useFetching";
 import PostService from "../API/PostService";
 import MyButton from "../components/UI/button/MyButton";
 import MyModal from "../components/UI/MyModal/MyModal";
@@ -15,7 +15,7 @@ import PostForm from "../components/PostForm";
 
 function Posts() {
     const [posts, setPosts] = useState([]);
-    const [filter, setFilter] = useState({sort: '', query: ''})
+    const [filter, setFilter] = useState({ sort: '', query: '' })
 
     //Modal
     const [modal, setModal] = useState(false)
@@ -34,7 +34,7 @@ function Posts() {
         const totalCount = (response.headers['x-total-count'])
         setTotalPages(getPageCount(totalCount, limit))
     })
-//Get posts from Api
+    //Get posts from Api
     useEffect(() => {
         fetchPosts(limit, page)
     }, [])
@@ -59,26 +59,26 @@ function Posts() {
 
     return (
         <div className="App">
-            <MyButton style={{marginTop: '30px'}}
-                      onClick={() => setModal(true)}>
+            <MyButton style={{ marginTop: '30px' }}
+                onClick={() => setModal(true)}>
                 Создать пост
             </MyButton>
             <MyModal visible={modal} setVisible={setModal}>
-                <PostForm create={createPost}/>
+                <PostForm create={createPost} />
             </MyModal>
 
-            <PostFilter filter={filter} setFilter={setFilter}/>
+            <PostFilter filter={filter} setFilter={setFilter} />
             {postError &&
-            <h1>Произошла ошибка ${postError}</h1>
+                <h1>Произошла ошибка ${postError}</h1>
             }
             {isPostLoading
-                ? <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}><Loader/></div>
-                : <PostList remove={removePost} posts={sortedAndSearchPosts} title={'Посты про JS 1'}/>
+                ? <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}><Loader /></div>
+                : <PostList remove={removePost} posts={sortedAndSearchPosts} title={'Посты про JS 1'} />
             }
             <Pagination
                 page={page}
                 changePage={changePage}
-                totalPages={totalPages}/>
+                totalPages={totalPages} />
         </div>
     );
 }
